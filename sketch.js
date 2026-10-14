@@ -315,9 +315,8 @@ function draw() {
 
 // ★★★★★★ 第 1 步 开始 / STEP 1 START：glslHash（把整个函数换成 Qwen 写的版本 / replace the whole function with Qwen's version）★★★★★★
 function glslHash() {
-  // 临时版本：所有格子都一样 / placeholder: every cell is the same
   return `float hash(vec2 p) {
-  return 0.5;
+  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
 }`;
 }
 // ★★★★★★ 第 1 步 结束 / STEP 1 END ★★★★★★
