@@ -362,7 +362,23 @@ function bodyUniform(pose) {
 
 // ★★★★★★ 第 5 步 开始 / STEP 5 START：pickRoom（把整个函数换成 Qwen 写的版本 / replace the whole function with Qwen's version）★★★★★★
 function pickRoom(pose) {
-  // 临时版本：永远是第一个房间 / placeholder: always the first room
+  // 没有姿态时，回到第一个房间
+  if (!pose) return 0;
+  // 取出 5 个关键点：鼻子、左手腕、右手腕、左肩、右肩
+  let nose = pose[0];
+  let lw = pose[15];
+  let rw = pose[16];
+  let ls = pose[11];
+  let rs = pose[12];
+  // 这 5 个点里只要有一个看不见，就回到第一个房间
+  if (!isVisible(nose) || !isVisible(lw) || !isVisible(rw) || !isVisible(ls) || !isVisible(rs)) return 0;
+  // 双手举过头顶（画面上 y 越小越高）：进入南瓜房间
+  if (lw.y < nose.y && rw.y < nose.y) return 1;
+  // 两肩之间的距离
+  let shoulders = dist(ls.x, ls.y, rs.x, rs.y);
+  // 双臂张得很开：进入永恒的爱房间
+  if (dist(lw.x, lw.y, rw.x, rw.y) > shoulders * 2.2) return 2;
+  // 其他情况：第一个房间
   return 0;
 }
 // ★★★★★★ 第 5 步 结束 / STEP 5 END ★★★★★★
@@ -405,3 +421,4 @@ function keyPressed() {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
+
