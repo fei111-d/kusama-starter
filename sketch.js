@@ -334,9 +334,13 @@ function glslLight() {
 
 // ★★★★★★ 第 3 步 开始 / STEP 3 START：glslBodyGlow（把整个函数换成 Qwen 写的版本 / replace the whole function with Qwen's version）★★★★★★
 function glslBodyGlow() {
-  // 临时版本：身体还不会发光 / placeholder: the body doesn't glow yet
   return `float bodyGlow(vec2 uv) {
-  return 0.0;
+  float g = 0.0;
+  for (int i = 0; i < 12; i++) {
+    float d = length((uv - uBody[i]) * vec2(uAspect, 1.0));
+    g += exp(-d * d * 80.0);
+  }
+  return min(g, 1.0);
 }`;
 }
 // ★★★★★★ 第 3 步 结束 / STEP 3 END ★★★★★★
