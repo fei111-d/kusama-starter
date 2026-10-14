@@ -347,8 +347,16 @@ function glslBodyGlow() {
 
 // ★★★★★★ 第 4 步 开始 / STEP 4 START：bodyUniform（把整个函数换成 Qwen 写的版本 / replace the whole function with Qwen's version）★★★★★★
 function bodyUniform(pose) {
-  // 临时版本：所有点都在很远的地方 / placeholder: every point is far away
-  return new Array(24).fill(-10);
+  let out = [];
+  for (const i of BODY_IDS) {
+    let p = pose ? pose[i] : null;
+    if (p && isVisible(p)) {
+      out.push(p.x / width, p.y / height);
+    } else {
+      out.push(-10, -10);
+    }
+  }
+  return out;
 }
 // ★★★★★★ 第 4 步 结束 / STEP 4 END ★★★★★★
 
