@@ -323,9 +323,11 @@ function glslHash() {
 
 // ★★★★★★ 第 2 步 开始 / STEP 2 START：glslLight（把整个函数换成 Qwen 写的版本 / replace the whole function with Qwen's version）★★★★★★
 function glslLight() {
-  // 临时版本：硬邦邦的圆点 / placeholder: a hard dot
   return `float light(vec2 p, vec2 c, float r) {
-  return step(length(p - c), r);
+  float d = length(p - c);
+  float core = smoothstep(r, r * 0.6, d);
+  float halo = exp(-d * d / (r * r) * 2.0) * 0.4;
+  return core + halo;
 }`;
 }
 // ★★★★★★ 第 2 步 结束 / STEP 2 END ★★★★★★
